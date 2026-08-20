@@ -1,6 +1,7 @@
 #include <video.h>
 #include <stdint.h>
 #include <io.h>
+#include <idt.h>
 
 struct idt_entry {
     uint16_t addr_low;
@@ -20,6 +21,7 @@ struct idt_ptr idt_ptr;
 
 extern void timer_wrapper();
 extern void keyboard_wrapper();
+extern void fault_wrapper();
 
 void set_idt_gate(uint8_t number, uint32_t base, uint16_t selector, uint8_t flags) {
     idt_entry[number].addr_low = (base & 0xFFFF);
@@ -56,6 +58,7 @@ void idt_init() {
         set_idt_gate(i, (uint32_t)0, 0x08, 0x8E);
     }
 
+    set_idt_gate(8, (uint32_t)fault_wrapper, 0x08, 0x8E);
     set_idt_gate(32, (uint32_t)timer_wrapper, 0x08, 0x8E);
     set_idt_gate(33, (uint32_t)keyboard_wrapper, 0x08, 0x8E);
 

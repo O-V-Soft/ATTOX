@@ -8,5 +8,6 @@ void idt_init();
 
 void timer_handler();
 void keyboard_handler();
+void fault_handler();
 
 #endif 
