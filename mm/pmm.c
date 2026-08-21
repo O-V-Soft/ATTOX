@@ -2,7 +2,7 @@
 #include <mm/pmm.h>
 
 #define PAGE_SIZE 4096
-#define RAM_SIZE 0x400000
+#define RAM_SIZE 0x800000
 
 #define TOTAL_PAGES (RAM_SIZE / PAGE_SIZE)
 

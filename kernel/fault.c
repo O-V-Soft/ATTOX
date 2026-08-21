@@ -1,7 +1,7 @@
-void panic(const char *panic_message);
+#include <video.h>
 
 void fault_handler() {
-    panic("\nDouble fault");
+    panic("Double fault");
 
     while (1) {
         asm volatile("hlt");
