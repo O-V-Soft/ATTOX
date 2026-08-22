@@ -6,11 +6,19 @@
 [extern timer_handler]
 [extern keyboard_handler]
 [extern fault_handler]
+[extern schedule]
 
 timer_wrapper:
-    pusha
-    call timer_handler
-    popa
+    pusha                 
+    
+    push esp           
+    call schedule        
+    mov esp, eax          
+
+    mov al, 0x20
+    out 0x20, al        
+
+    popa                  
     iret
 
 keyboard_wrapper:

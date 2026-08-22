@@ -5,6 +5,7 @@
 #include <mm/vmm.h>
 #include <mm/kheap.h>
 #include <fs.h>
+#include <task.h>
 
 void __attribute__((section(".text.entry"))) kernel_main() {
     idt_init(); 
@@ -12,26 +13,13 @@ void __attribute__((section(".text.entry"))) kernel_main() {
     vmm_init();
     fs_init();
     kheap_init();
+    task_init();
 
     screen_clear();
 
-    char buf[1024];
-
-    int home_id = fs_create("home", 0, DIR); 
-    int welcome_id = fs_create("welcome", home_id, FILE); 
-
-    fs_write(welcome_id, "welcome to the attox!", 13); 
-
-    int id = find_inode("sh", home_id);
-
-    if (id != -1) {
-        int bytes = fs_read(id, buf, 13);
-        buf[bytes] = '\0';
-        printk(buf);
-        printk("\n");
-    } else {
-        panic("welcome file not found!\n");
-    }
+    int dev_id = fs_create("dev", 0, DIR);
+    int bin_id = fs_create("bin", 0, DIR);
+    int etc_id = fs_create("etc", 0, DIR);
 
     while(1) {
         asm volatile("hlt");

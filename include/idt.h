@@ -6,7 +6,6 @@ void set_idt_gate(uint8_t number, uint32_t base, uint16_t selector, uint8_t flag
 void pic_remap();
 void idt_init();
 
-void timer_handler();
 void keyboard_handler();
 void fault_handler();
 

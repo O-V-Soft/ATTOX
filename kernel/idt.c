@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <io.h>
 #include <idt.h>
+#include <task.h>
 
 struct idt_entry {
     uint16_t addr_low;

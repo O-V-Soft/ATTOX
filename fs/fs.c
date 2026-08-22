@@ -74,7 +74,7 @@ int find_inode(const char *name, uint8_t parent_id) {
 }
 
 void fs_write(uint8_t inode_id, const char *buffer, size_t size) {
-    if (inode_id >= 32 || inodes[inode_id].type != DIR) return; 
+    if (inode_id >= 32 || inodes[inode_id].type != FILE) return; 
 
     uint8_t* ptr = (uint8_t*) kmalloc(size);
     if (!ptr) return;

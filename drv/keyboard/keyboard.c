@@ -7,18 +7,6 @@ int scancode_to_ascii(uint8_t scancode) {
 
     switch (scancode) {
         case 0x1C: letter = '\n'; break;
-        case 0x02: letter = '1'; break;
-		case 0x03: letter = '2'; break;
-		case 0x04: letter = '3'; break;
-		case 0x05: letter = '4'; break;
-		case 0x06: letter = '5'; break;
-		case 0x07: letter = '6'; break;
-		case 0x08: letter = '7'; break;
-		case 0x09: letter = '8'; break;
-		case 0x0A: letter = '9'; break;
-		case 0x0B: letter = '0'; break;
-		case 0x0C: letter = '-'; break;
-		case 0x0D: letter = '='; break;
         case 0x1E: letter = 'a'; break;
         case 0x30: letter = 'b'; break;
         case 0x2E: letter = 'c'; break;
@@ -46,10 +34,31 @@ int scancode_to_ascii(uint8_t scancode) {
         case 0x15: letter = 'y'; break;
         case 0x2C: letter = 'z'; break;
         case 0x39: letter = ' '; break;
+        case 0x02: letter = '1'; break;
+        case 0x03: letter = '2'; break;
+        case 0x04: letter = '3'; break;
+        case 0x05: letter = '4'; break;
+        case 0x06: letter = '5'; break;
+        case 0x07: letter = '6'; break;
+        case 0x08: letter = '7'; break;
+        case 0x09: letter = '8'; break;
+        case 0x0A: letter = '9'; break;
+        case 0x0B: letter = '0'; break;
+        case 0x0C: letter = '-'; break;
+        case 0x0D: letter = '='; break;
+        case 0x34: letter = '.'; break;
+        case 0x35: letter = '/'; break;
+        case 0x1A: letter = '['; break;
+        case 0x1B: letter = ']'; break;
+        case 0x33: letter = ','; break;
+        case 0x28: letter = '\''; break;
+        case 0x27: letter = ';'; break;
         case 0x0E:
 			cursor -= 2;
 			put_char(' ');
 			cursor -= 2;
+
+            update_cursor();
 
 			letter = 0; 
 			break;
