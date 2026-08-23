@@ -8,5 +8,6 @@ void panic(const char *panic_message);
 void update_cursor();
 
 extern int cursor;
+extern int prompt_limit;
 
 #endif 

@@ -7,6 +7,8 @@ uint8_t *vga = (uint8_t*)0xb8000;
 int cursor = 0;
 uint8_t color = 0x0F;
 
+int prompt_limit = 0;
+
 void screen_clear() {
 	cursor = 0;
 
@@ -45,11 +47,11 @@ void put_char(char c) {
 
 		cursor = (current_row + 1) * 160;
 	} else if (c == '\b') {
-        if (cursor >= 2) {
+        if (cursor > prompt_limit && cursor >= 2) {
             cursor -= 2;
             vga[cursor] = ' ';
             vga[cursor + 1] = color;
-        }
+		}
 	}
 	else {
 		vga[cursor] = c;

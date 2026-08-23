@@ -46,4 +46,6 @@ static inline int _syscall3(int num, uintptr_t arg1, uintptr_t arg2, uintptr_t a
     return ret;
 }
 
+void sh();
+
 #endif
