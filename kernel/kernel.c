@@ -6,6 +6,7 @@
 #include <mm/kheap.h>
 #include <fs.h>
 #include <task.h>
+#include <unistd.h>
 
 void __attribute__((section(".text.entry"))) kernel_main() {
     idt_init(); 
@@ -20,7 +21,7 @@ void __attribute__((section(".text.entry"))) kernel_main() {
     int dev_id = fs_create("dev", 0, DIR);
     int bin_id = fs_create("bin", 0, DIR);
     int etc_id = fs_create("etc", 0, DIR);
-
+    
     while(1) {
         asm volatile("hlt");
     };

@@ -1,4 +1,4 @@
-name: Build VladOS
+name: Build ATTOX
 
 on:
   push:

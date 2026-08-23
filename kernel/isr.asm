@@ -3,10 +3,12 @@
 [global timer_wrapper]
 [global keyboard_wrapper]
 [global fault_wrapper]
+[global syscall_wrapper]
 [extern timer_handler]
 [extern keyboard_handler]
 [extern fault_handler]
 [extern schedule]
+[extern syscall_handler]
 
 timer_wrapper:
     pusha                 
@@ -35,4 +37,15 @@ fault_wrapper:
     
     popa
     add esp, 4                 
+    iret
+
+syscall_wrapper:
+    pusha   
+
+    push esp   
+    call syscall_handler
+
+    add esp, 4
+   
+    popa         
     iret
