@@ -2,6 +2,10 @@
 #include <stdint.h>
 #include <io.h>
 
+#define KB_BUFFER_SIZE 256
+char kb_buffer[KB_BUFFER_SIZE];
+int kb_count = 0;
+
 int scancode_to_ascii(uint8_t scancode) {
     int letter = 0;
 
@@ -53,15 +57,7 @@ int scancode_to_ascii(uint8_t scancode) {
         case 0x33: letter = ','; break;
         case 0x28: letter = '\''; break;
         case 0x27: letter = ';'; break;
-        case 0x0E:
-			cursor -= 2;
-			put_char(' ');
-			cursor -= 2;
-
-            update_cursor();
-
-			letter = 0; 
-			break;
+        case 0x0E: letter = '\b'; break;
 
         default: letter = 0; break;
     }
@@ -78,9 +74,25 @@ void keyboard_handler() {
     }
 
     int ascii = scancode_to_ascii(scancode);
-    if (ascii) {
-        put_char(ascii);
+    if (ascii != 0 && kb_count < KB_BUFFER_SIZE) {
+        kb_buffer[kb_count] = (char)ascii;
+        kb_count++;
     }
 
     outb(0x20, 0x20);
+}
+
+char getchar() {
+    while (kb_count == 0) {
+        asm volatile("hlt");
+    }
+
+    char c = kb_buffer[0];
+
+    for (int i = 0; i < kb_count - 1; i++) {
+        kb_buffer[i] = kb_buffer[i + 1];
+    }
+
+    kb_count--;
+    return c;
 }

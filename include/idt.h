@@ -8,6 +8,8 @@ void pic_remap();
 void idt_init();
 
 void keyboard_handler();
+char getchar();
+
 void fault_handler();
 void syscall_handler(registers_t *regs);
 
