@@ -4,6 +4,7 @@
 
 typedef struct task {
     uint32_t esp;
+    uint32_t kernel_esp0;
     int pid;
     uint32_t cwd;
     struct task *next;

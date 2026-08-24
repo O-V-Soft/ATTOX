@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <vfs.h>
 #include <usr/tss.h>
-#include <usr/user.h>
 
 void __attribute__((section(".text.entry"))) kernel_main() {
     idt_init(); 
@@ -39,8 +38,6 @@ void __attribute__((section(".text.entry"))) kernel_main() {
 
     const char *name_fs = "ATTOFS";
     fs_write(fstab_id, name_fs, 7);
-
-    //switch_to_user_mode(sh);
     
     create_task(sh);
     

@@ -11,8 +11,16 @@
 [extern syscall_handler]
 
 timer_wrapper:
+    push ds
+    push es
+    push fs
+    push gs
     pusha                 
-    
+
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+
     push esp           
     call schedule        
     mov esp, eax          
@@ -21,6 +29,10 @@ timer_wrapper:
     out 0x20, al        
 
     popa                  
+    pop gs
+    pop fs
+    pop es
+    pop ds
     iret
 
 keyboard_wrapper:
