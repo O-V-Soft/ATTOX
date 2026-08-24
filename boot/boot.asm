@@ -47,23 +47,47 @@ boot_drive: db 0
 
 align 4
 gdt_start:
-    dq 0             
+    dq 0         
 
-gdt_code:
+gdt_code:               
     dw 0xFFFF          
     dw 0x0000          
     db 0x00            
-    db 10011010b      
+    db 10011010b    
     db 11001111b 
     db 0x00      
 
-gdt_data:
+gdt_data:                 
     dw 0xFFFF         
     dw 0x0000          
     db 0x00             
-    db 10010010b       
+    db 10010010b          
     db 11001111b      
     db 0x00     
+
+gdt_user_code:             
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 11111010b        
+    db 11001111b
+    db 0x00
+
+gdt_user_data:             
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 11110010b          
+    db 11001111b
+    db 0x00
+
+gdt_tss:                 
+    dw 0x006B             
+    dw 0x0000             
+    db 0x00              
+    db 10001001b       
+    db 0x00                
+    db 0x00              
 
 gdt_end:
 

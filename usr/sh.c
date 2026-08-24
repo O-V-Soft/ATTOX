@@ -7,6 +7,14 @@
 void sh() {
     char buf[128];
 
+    char *dir = "dev"; 
+    int to_dev = _syscall1(12, (uintptr_t)dir);
+
+    int tty_fd = _syscall2(5, (uintptr_t)"tty", 0);
+
+    dir = "/";
+    int to_root = _syscall1(12, (uintptr_t)dir);
+
     while (1) {
         _syscall3(4, 1, (uintptr_t)"sh# ", 4); 
 
@@ -26,6 +34,19 @@ void sh() {
         if (strcmp(buf, "clear") == 0) {
             screen_clear();
         } 
+
+        else if (buf[0] == 'c' && buf[1] == 'd' && (buf[2] == ' ' || buf[2] == '\0')) {
+            char *path = buf + 3;
+            if (buf[2] == '\0' || path[0] == '\0') {
+                path = "/"; 
+            }
+
+            int res = _syscall1(12, (uintptr_t)path);
+            if (res < 0) {
+                const char *err = "cd: no such directory\n";
+                _syscall3(4, 1, (uintptr_t)err, strlen(err));
+            }
+        }
 
         else if (strcmp(buf, "ls") == 0) {
              _syscall3(3, 1, 0, 0);
@@ -50,7 +71,7 @@ void sh() {
         } 
             
         else if (strcmp(buf, "help") == 0) {
-            const char *help_msg = "ls\ntouch <file>\nmkdir <dir>\nclear\nhelp\n";
+            const char *help_msg = "cd\nls\ntouch <file>\nmkdir <dir>\nclear\nhelp\n";
             _syscall3(4, 1, (uintptr_t)help_msg, strlen(help_msg));
         } 
             

@@ -63,7 +63,7 @@ void idt_init() {
     set_idt_gate(8, (uint32_t)fault_wrapper, 0x08, 0x8E);
     set_idt_gate(32, (uint32_t)timer_wrapper, 0x08, 0x8E);
     set_idt_gate(33, (uint32_t)keyboard_wrapper, 0x08, 0x8E);
-    set_idt_gate(128, (uint32_t)syscall_wrapper, 0x08, 0x8E);
+    set_idt_gate(128, (uint32_t)syscall_wrapper, 0x08, 0xEE);
 
     asm volatile("lidt (%0)" : : "r" (&idt_ptr)); 
     asm volatile("sti");

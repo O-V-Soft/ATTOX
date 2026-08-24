@@ -5,6 +5,7 @@
 typedef struct task {
     uint32_t esp;
     int pid;
+    uint32_t cwd;
     struct task *next;
 } task_t;
 

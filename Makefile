@@ -15,7 +15,7 @@ LDFLAGS     := -m elf_i386 -T linker.ld --nostdlib --static
 OBJ         := kernel.o video.o idt.o io.o  fault.o isr.o \
 			   keyboard.o pmm.o vmm.o paging.o panic.o \
                kheap.o fs.o string.o task.o sched.o \
-               system_call.o sh.o
+               system_call.o vfs.o sh.o tss.o user.o
 
 vpath %.c kernel drv/video drv/keyboard mm fs lib \
           usr
@@ -50,7 +50,7 @@ cleane:
 	$(RM) *.o *.bin *.elf *.img
 
 run: os-image.img
-	qemu-system-i386 -drive file=os-image.img,format=raw
+	qemu-system-i386 -drive file=os-image.img,format=raw 
 
 push:
 	git add .
@@ -60,3 +60,11 @@ push:
 dd:
 	-sudo umount /dev/mmcblk0*
 	sudo dd if=os-image.img of=/dev/mmcblk0 status=progress conv=fsync
+
+re:
+	make cleane
+	make
+
+rer:
+	make cleane
+	make run
