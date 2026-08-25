@@ -2,6 +2,7 @@
 #include <vfs.h>
 #include <video.h>
 #include <idt.h>
+#include <fs.h>
 
 int tty_read(node_t *node, uint8_t *buffer, int count) {
     int read_bytes = 0;
@@ -48,6 +49,18 @@ node_t dev_tty_node = {
 };
 
 node_t *fd_table[32];
+
+int file_read(node_t *node, uint8_t *buffer, int count) {
+    int inode = node->type; 
+    return fs_read(inode, buffer, count); 
+}
+
+int file_write(node_t *node, uint8_t *buffer, int count) {
+    int inode = node->type;
+    return fs_write(inode, buffer, count); 
+}
+
+node_t file_nodes[32]; 
 
 void vfs_init() {
     for (int i = 0; i < 32; i++) {

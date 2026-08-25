@@ -73,11 +73,11 @@ int find_inode(const char *name, uint8_t parent_id) {
     return -1;
 }
 
-void fs_write(uint8_t inode_id, const char *buffer, size_t size) {
-    if (inode_id >= 32 || inodes[inode_id].type != FILE) return; 
+int fs_write(uint8_t inode_id, const char *buffer, size_t size) {
+    if (inode_id >= 32 || inodes[inode_id].type != FILE) return -1; 
 
     uint8_t* ptr = (uint8_t*) kmalloc(size);
-    if (!ptr) return;
+    if (!ptr) return -1;
 
     inodes[inode_id].data = ptr;
     inodes[inode_id].size = size;
@@ -85,6 +85,8 @@ void fs_write(uint8_t inode_id, const char *buffer, size_t size) {
     for (size_t i = 0; i < size; i++) {
         inodes[inode_id].data[i] = (uint8_t)buffer[i];
     }
+
+    return size;
 }
 
 int fs_read(uint8_t inode_id, char *buffer, size_t size) {

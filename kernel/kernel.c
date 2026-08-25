@@ -22,8 +22,6 @@ void __attribute__((section(".text.entry"))) kernel_main() {
 
     screen_clear();
 
-    int dev_id = fs_create("dev", 0, DIR);
-    int bin_id = fs_create("bin", 0, DIR);
     int etc_id = fs_create("etc", 0, DIR);
 
     int hn_id = fs_create("hostname", etc_id, FILE);
@@ -39,7 +37,7 @@ void __attribute__((section(".text.entry"))) kernel_main() {
     const char *name_fs = "ATTOFS";
     fs_write(fstab_id, name_fs, 7);
     
-    create_task(sh);
+    create_task(main);
     
     while(1) {
         asm volatile("hlt");

@@ -16,4 +16,8 @@ int vfs_write(int fd, void *buf, int count);
 extern node_t *fd_table[32];
 extern node_t dev_tty_node;
 
+extern node_t file_nodes[32];
+int file_read(node_t *node, uint8_t *buffer, int count);
+int file_write(node_t *node, uint8_t *buffer, int count);
+
 #endif

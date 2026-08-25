@@ -4,7 +4,7 @@
 #include <mm/kheap.h>
 
 task_t *current_task = 0;
-static int next_pid = 1;
+int next_pid = 1;
 
 static task_t main_task;
 

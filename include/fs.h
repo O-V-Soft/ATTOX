@@ -23,7 +23,7 @@ typedef struct {
 void fs_init();
 int fs_create(const char *name, uint8_t parent_id, uint8_t type);
 int find_inode(const char *name, uint8_t parent_id);
-void fs_write(uint8_t inode_id, const char *buffer, size_t size);
+int fs_write(uint8_t inode_id, const char *buffer, size_t size);
 int fs_read(uint8_t inode_id, char *buffer, size_t size);
 
 extern dirent_t dirents[32];

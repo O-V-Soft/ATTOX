@@ -15,5 +15,6 @@ void create_task(void (*entry_point)());
 uint32_t schedule(uint32_t current_esp);
 
 extern task_t *current_task;
+extern int next_pid;
 
 #endif

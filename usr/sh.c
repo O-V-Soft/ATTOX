@@ -1,19 +1,10 @@
 #include <video.h>
 #include <stdint.h>
-#include <fs.h>
 #include <unistd.h>
 #include <string.h>
 
 void sh() {
     char buf[128];
-
-    char *dir = "dev"; 
-    int to_dev = _syscall1(12, (uintptr_t)dir);
-
-    int tty_fd = _syscall2(5, (uintptr_t)"tty", 0);
-
-    dir = "/";
-    int to_root = _syscall1(12, (uintptr_t)dir);
 
     while (1) {
         _syscall3(4, 1, (uintptr_t)"sh# ", 4); 
@@ -49,8 +40,13 @@ void sh() {
         }
 
         else if (strcmp(buf, "ls") == 0) {
-             _syscall3(3, 1, 0, 0);
-        } 
+            char dir_buf[256];
+            int bytes = _syscall2(13, (uintptr_t)dir_buf, sizeof(dir_buf));
+            
+            if (bytes > 0) {
+                _syscall3(4, 1, (uintptr_t)dir_buf, bytes);
+            }
+        }
 
         else if (buf[0] == 't' && buf[1] == 'o' && buf[2] == 'u' && buf[3] == 'c' && buf[4] == 'h' && buf[5] == ' ') {
             char *filename = buf + 6;
@@ -69,9 +65,34 @@ void sh() {
                 _syscall3(4, 1, (uintptr_t)err, strlen(err));
             }
         } 
+
+        else if (buf[0] == 'c' && buf[1] == 'a' && buf[2] == 't' && buf[3] == ' ') {
+            char *filename = buf + 4;
+            while (*filename == ' ') filename++; 
+
+            int fd = _syscall1(5, (uintptr_t)filename);
+    
+            if (fd < 0) {
+                const char *err = "cat: no such file\n";
+                _syscall3(4, 1, (uintptr_t)err, strlen(err));
+            } else {
+                char read_buf[256];
+        
+                int bytes_read = _syscall3(3, fd, (uintptr_t)read_buf, sizeof(read_buf) - 1);
+        
+                if (bytes_read > 0) {
+                    read_buf[bytes_read] = '\0';
+                    _syscall3(4, 1, (uintptr_t)read_buf, bytes_read);
+            
+                    if (read_buf[bytes_read - 1] != '\n') {
+                        _syscall3(4, 1, (uintptr_t)"\n", 1);
+                    }
+                }
+            }
+        }
             
         else if (strcmp(buf, "help") == 0) {
-            const char *help_msg = "cd\nls\ntouch <file>\nmkdir <dir>\nclear\nhelp\n";
+            const char *help_msg = "cd\ncat <file>\nls\ntouch <file>\nmkdir <dir>\nclear\nhelp\n";
             _syscall3(4, 1, (uintptr_t)help_msg, strlen(help_msg));
         } 
             
