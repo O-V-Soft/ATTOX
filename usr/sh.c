@@ -7,11 +7,18 @@ void sh() {
     char buf[128];
     char name_buf[6];
 
+    _syscall1(12, (uintptr_t)"etc");
     int hn_fd = _syscall1(5, (uintptr_t)"hostname");
     _syscall3(3, hn_fd, (uintptr_t)name_buf, 6);
+    _syscall1(12, (uintptr_t)"/");
 
     while (1) {
-        _syscall3(4, 1, (uintptr_t)"sh# ", 4);
+        _syscall3(4, 1, (uintptr_t)"[", 1);
+        _syscall3(4, 1, (uintptr_t)"sh", 2);
+        _syscall3(4, 1, (uintptr_t)"@", 1);
+        _syscall3(4, 1, (uintptr_t)name_buf, 5);
+        _syscall3(4, 1, (uintptr_t)"]", 1);
+        _syscall3(4, 1, (uintptr_t)"# ", 2);
 
         prompt_limit = cursor;
 
@@ -25,10 +32,6 @@ void sh() {
         }
 
         if (buf[0] == '\0') continue;
-
-        if (strcmp(buf, "clear") == 0) {
-            screen_clear();
-        } 
 
         else if (buf[0] == 'c' && buf[1] == 'd' && (buf[2] == ' ' || buf[2] == '\0')) {
             char *path = buf + 3;
@@ -96,7 +99,7 @@ void sh() {
         }
             
         else if (strcmp(buf, "help") == 0) {
-            const char *help_msg = "cd\ncat <file>\nls\ntouch <file>\nmkdir <dir>\nclear\nhelp\n";
+            const char *help_msg = "cd\ncat <file>\nls\ntouch <file>\nmkdir <dir>\nhelp\n";
             _syscall3(4, 1, (uintptr_t)help_msg, strlen(help_msg));
         } 
             
