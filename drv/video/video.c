@@ -9,6 +9,8 @@ uint8_t color = 0x0F;
 
 int prompt_limit = 0;
 
+static int ansi_state = 0;
+
 void screen_clear() {
 	cursor = 0;
 
@@ -42,6 +44,51 @@ void screen_scroll() {
 }
 
 void put_char(char c) {
+    if (ansi_state == 0) {
+        if (c == '\033') {
+            ansi_state = 1;
+            return;
+        }
+    }
+    else if (ansi_state == 1) {
+        if (c == '[') {
+            ansi_state = 2;
+            return;
+        }
+        ansi_state = 0; 
+    }
+    else if (ansi_state == 2) {
+        if (c == '3') {
+            ansi_state = 3;
+            return;
+        } else if (c == '0') {
+            ansi_state = 5;
+            return;
+        }
+        ansi_state = 0;
+    }
+    else if (ansi_state == 3) {
+        if (c == '2') {
+            ansi_state = 4;
+            return;
+        }
+        ansi_state = 0;
+    }
+    else if (ansi_state == 4) {
+        if (c == 'm') {
+            color = 0x0A;
+        }
+        ansi_state = 0;
+        return;
+    }
+    else if (ansi_state == 5) {
+        if (c == 'm') {
+            color = 0x0F; 
+        }
+        ansi_state = 0; 
+        return;
+    }
+
     if (c == '\n') {
 		int current_row = cursor / 160;
 
