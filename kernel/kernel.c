@@ -21,23 +21,8 @@ void __attribute__((section(".text.entry"))) kernel_main() {
     tss_init();
 
     screen_clear();
-
-    int etc_id = fs_create("etc", 0, DIR);
-
-    int hn_id = fs_create("hostname", etc_id, FILE);
-    int motd_id = fs_create("motd", etc_id, FILE);
-    int fstab_id = fs_create("fstab", etc_id, FILE);
-
-    const char *hostname = "ATTOX";
-    fs_write(hn_id, hostname, 6);
-
-    const char *message = "the ATTOX.";
-    fs_write(motd_id, message, 11);
-
-    const char *name_fs = "ATTOFS";
-    fs_write(fstab_id, name_fs, 7);
     
-    create_task(main);
+    create_task(init);
     
     while(1) {
         asm volatile("hlt");

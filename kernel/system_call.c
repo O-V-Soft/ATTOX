@@ -15,31 +15,11 @@ void syscall_handler(registers_t *regs) {
 
     switch (syscall_num) {
         case 2: {
-            task_t *child = (task_t*)kmalloc(sizeof(task_t));
-            child->pid = next_pid++;
-            child->cwd = current_task->cwd;
+            void (*entry_point)() = (void (*)())regs->ebx;
 
-            uint8_t *child_kstack = (uint8_t*)kmalloc(4096);
-            uint8_t *parent_kstack_base = (uint8_t*)(current_task->kernel_esp0 - 4096);
+            create_task(entry_point);
 
-            for (int i = 0; i < 4096; i++) {
-                child_kstack[i] = parent_kstack_base[i];
-            }
-
-            uint32_t esp_offset = (uint32_t)parent_kstack_base + 4096 - (uint32_t)regs;
-            uint32_t child_kstack_top = (uint32_t)child_kstack + 4096;
-
-            child->kernel_esp0 = child_kstack_top;
-
-            registers_t *child_regs = (registers_t*)(child_kstack_top - esp_offset);
-
-            child_regs->eax = 0;
-
-            child->esp = (uint32_t)child_regs;
-            child->next = current_task->next;
-            current_task->next = child;
-
-            regs->eax = child->pid;
+            regs->eax = next_pid - 1;
             break;
         }
 

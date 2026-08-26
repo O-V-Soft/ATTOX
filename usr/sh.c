@@ -5,9 +5,13 @@
 
 void sh() {
     char buf[128];
+    char name_buf[6];
+
+    int hn_fd = _syscall1(5, (uintptr_t)"hostname");
+    _syscall3(3, hn_fd, (uintptr_t)name_buf, 6);
 
     while (1) {
-        _syscall3(4, 1, (uintptr_t)"sh# ", 4); 
+        _syscall3(4, 1, (uintptr_t)"sh# ", 4);
 
         prompt_limit = cursor;
 

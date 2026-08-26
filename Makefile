@@ -15,10 +15,10 @@ LDFLAGS     := -m elf_i386 -T linker.ld --nostdlib --static
 OBJ         := kernel.o video.o idt.o io.o  fault.o isr.o \
 			   keyboard.o pmm.o vmm.o paging.o panic.o \
                kheap.o fs.o string.o task.o sched.o \
-               system_call.o vfs.o sh.o tss.o main.o
+               system_call.o vfs.o sh.o tss.o init.o
 
 vpath %.c kernel drv/video drv/keyboard mm fs lib \
-          usr init
+          usr
 
 vpath %.asm boot kernel mm 
 
