@@ -68,7 +68,7 @@ void put_char(char c) {
         ansi_state = 0;
     }
     else if (ansi_state == 3) {
-        if (c == '2') {
+        if (c == '1') {
             ansi_state = 4;
             return;
         }
@@ -76,7 +76,7 @@ void put_char(char c) {
     }
     else if (ansi_state == 4) {
         if (c == 'm') {
-            color = 0x0A;
+            color = 0x0C;
         }
         ansi_state = 0;
         return;

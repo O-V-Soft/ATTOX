@@ -13,10 +13,10 @@ void sh() {
     _syscall1(12, (uintptr_t)"/");
 
     while (1) {
-        _syscall3(4, 1, (uintptr_t)"\033[32m", 5);
+        _syscall3(4, 1, (uintptr_t)"\033[31m", 5);
 
         _syscall3(4, 1, (uintptr_t)"[", 1);
-        _syscall3(4, 1, (uintptr_t)"sh", 2);
+        _syscall3(4, 1, (uintptr_t)"root", 4);
         _syscall3(4, 1, (uintptr_t)"@", 1);
         _syscall3(4, 1, (uintptr_t)name_buf, 5);
         _syscall3(4, 1, (uintptr_t)"]", 1);
