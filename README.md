@@ -40,6 +40,6 @@ ATTOX utilizes a custom system call table:
 Compile the kernel and boot via QEMU:
 
 ```bash
-make
+make cleane
 make run
 
